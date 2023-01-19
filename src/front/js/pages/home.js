@@ -1,28 +1,37 @@
 import React, { useContext } from "react";
+
+import Mensajes from "../component/Mensajes.jsx";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
 
-
+import Publicar from "../component/Publicar.jsx";
+import SideBar from "../component/SideBar.jsx";
+import Search from "../component/Search.jsx";
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
+  const { store, actions } = useContext(Context);
 
-	return (
-		<div className="text-center mt-5">
-		  <h1>Esta será la página principal</h1>
-		  <p>
-			<img src={rigoImageUrl} />
-		  </p>
-		  <div className="alert alert-info">
-			{store.message || "Buscando nuevos anuncios..."}
-		  </div>
-		  <p>
-			This boilerplate comes with lots of documentation:{" "}
-			<a href="https://start.4geeksacademy.com/starters/react-flask">
-			  Read documentation
-			</a>
-		  </p>
-		</div>
-	  );
-	};
+  return (
+    <div className="">
+      <div className="row">
+        <div className="col-2 d-flex flex-column">
+          <SideBar />
+        </div>
+        {/* Feed */}
+        <div className="col-6 py-3">
+          <h3>Los mejores precios del mercado en vehiculos</h3>
+          <Publicar />
+          <div className="alert alert-info">
+            {store.texto &&
+              store.texto.map((escrito, index) => {
+                return <Mensajes key={index} tweet={escrito} />;
+              })}
+          </div>
+        </div>
+        <div className="col-4">
+          <Search />
+        </div>
+      </div>
+    </div>
+  );
+};
