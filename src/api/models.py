@@ -47,7 +47,7 @@ class User(db.Model):
             "anuncios": [ anunciar.get_content() for anunciar in self.anuncios ]
         }
 
-class Anuncio(db.Model): #Query
+class Publicacion(db.Model): #Query
 
     id = db.Column(db.Integer, primary_key=True)
 
