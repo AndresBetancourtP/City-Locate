@@ -96,7 +96,7 @@ def login():
     else:
         profile = User.query.filter_by(username=username, password=hashlib.md5( password.encode() ).hexdigest()).one_or_none()
         if profile == None:
-            return 'El usuario no esta registrado en Chuiter', 404
+            return 'El usuario no esta registrado', 404
         else:
             access_token = create_access_token(identity=username)
             return jsonify({"token": access_token })
