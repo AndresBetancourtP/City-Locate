@@ -3,9 +3,12 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Publicacion
 from api.utils import generate_sitemap, APIException
+import hashlib
 
 #importe decorador jwt_required
 from flask_jwt_extended import jwt_required
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
 
 api = Blueprint('api', __name__)
 
@@ -33,7 +36,8 @@ def handle_user():
 
         if profile == None:
 
-            new_user = User(body['email'], body['password'], body['username'], body['profile_name'])
+            new_user = User(body['email'], hashlib.md5( body['password'].encode() ).hexdigest(), body['username'], body['profile_name'])
+ 
             try:
                 db.session.add(new_user)
                 db.session.commit()
@@ -59,7 +63,7 @@ def handle_user():
     def get_anuncio():
         all_anuncio = Anuncio.query.all()
         return jsonify(
-                [ anunciar.serialize() for anuncio in all_anuncios ]
+                list.(reversed(([ anuncio.serialize() for anuncio in all_anuncio]))
             ), 200
 
 
@@ -69,10 +73,8 @@ def handle_user():
         body = request.json
         if "content" not in body:
             return "Ese anuncio no tiene información", 400
-        if "email" not in body:
-            return "Debes incluir un email. ✝", 400
         else:
-            author = User.query.filter_by(email=body["email"]).one_or_none()
+            author = User.query.filter_by(username=get_jwt_identity()).one_or_none()
             if author == None:
                 return "Ese usuario no existe en City Locate.", 404
             else:
@@ -84,3 +86,23 @@ def handle_user():
                 except Exception as err:
                     return "Ha ocurrido un error de servidor", 500
                     return "Algo ha salido mal, vuelve a intentarlo", 404
+
+@api.route("/login", methods=["POST"])
+def login():
+    username = request.json.get("username", None)
+    password = request.json.get("password", None)
+    if username == None or password == None:
+        return jsonify({"msg": "Bad username or password"}), 401
+    else:
+        profile = User.query.filter_by(username=username, password=hashlib.md5( password.encode() ).hexdigest()).one_or_none()
+        if profile == None:
+            return 'El usuario no esta registrado en Chuiter', 404
+        else:
+            access_token = create_access_token(identity=username)
+            return jsonify({"token": access_token })
+
+@api.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
