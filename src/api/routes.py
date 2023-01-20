@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Publicacion
 from api.utils import generate_sitemap, APIException
 
+#importe decorador jwt_required
+from flask_jwt_extended import jwt_required
 
 api = Blueprint('api', __name__)
 
@@ -51,8 +53,9 @@ def handle_user():
         else:
             return jsonify(profile.get_profile()), 200
 
-
+    
     @api.route('/anuncio', methods=['GET'])
+    #@jwt_required()
     def get_anuncio():
         all_anuncio = Anuncio.query.all()
         return jsonify(
@@ -61,6 +64,7 @@ def handle_user():
 
 
     @api.route('/anuncios', methods=['POST'])
+    @jwt_required()
     def post_anuncio():
         body = request.json
         if "content" not in body:
