@@ -41,7 +41,7 @@ def handle_user():
             try:
                 db.session.add(new_user)
                 db.session.commit()
-                return ""
+                return "Se ha creado el usuario satisfactoriamente"
             except Exception as err:
                 return 'Ha ocurrido un error!', 500
         else:
@@ -63,7 +63,7 @@ def handle_user():
     def get_anuncio():
         all_anuncio = Anuncio.query.all()
         return jsonify(
-                list.(reversed(([ anuncio.serialize() for anuncio in all_anuncio]))
+                list.(reversed(([ anuncio.serialize() for anuncio in all_anuncio])))
             ), 200
 
 
@@ -82,9 +82,9 @@ def handle_user():
                 db.session.add(new_anuncio) 
                 try:
                     db.session.commit() 
-                    return "Anuncio publicador con exito!", 201
+                    return jsonify(new_publicacion.serialize()), 201
                 except Exception as err:
-                    return "Ha ocurrido un error de servidor", 500
+                    return jsonify({ "error": "Ha ocurrido un error de servidor"}), 500
                     return "Algo ha salido mal, vuelve a intentarlo", 404
 
 @api.route("/login", methods=["POST"])

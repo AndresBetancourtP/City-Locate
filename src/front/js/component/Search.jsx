@@ -28,13 +28,17 @@ const Search = () => {
               <li className="list-group-item bg-light text-start">
                 Ford
               </li>
-              <li className="list-group-item bg-light text-start">Fiat</li>
-              <li className="list-group-item bg-light text-start">Jeep</li>
+              <li className="list-group-item bg-light text-start">
+                Fiat
+                </li>
+              <li className="list-group-item bg-light text-start">
+                Jeep
+                </li>
               <li className="list-group-item bg-light text-start">
                 Toyota
               </li>
               <li className="list-group-item bg-light text-start">
-                Nissa
+                Nissan
               </li>
               <li className="list-group-item bg-light text-start">
                 Volkswagen

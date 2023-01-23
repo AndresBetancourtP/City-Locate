@@ -2,6 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 		  message: null,
+		  publicacion: [],
+		  token:
+		  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY3MzY0ODcxMiwianRpIjoiNmI2ZWY0MjItODI1NS00Y2NkLTg3MTUtNDIyODI4ZmUwMTYyIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6InNhbXVlbGljIiwibmJmIjoxNjczNjQ4NzEyLCJleHAiOjE2NzM2NDk2MTJ9.9lXAA4AYSXT9fcdkMmia79kp1flkNfRKqGFhrFUlLK8",
 		  demo: [
 			{
 			  title: "FIRST",
