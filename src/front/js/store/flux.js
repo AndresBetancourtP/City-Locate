@@ -52,6 +52,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 			//reset the global store
 			setStore({ demo: demo });
 		  },
+
+		  postAnuncio: async (anuncio, url) => {
+			const store = getStore();
+	
+			let response = await fetch(process.env.BACKEND_URL + "/api/anuncios", {
+		@@ -80,6 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
+			  },
+			  body: JSON.stringify({
+				content: chuit,
+				image: url,
+			  }), // body data type must match "Content-Type" header
+			});
+			let data = await response.json();
+			if (data) {
+			  alert("anuncio publicado satisfactoriamente");
+			  setStore({ anuncios: [data, ...store.anuncios] });
+			}
+		  },
 		},
 	  };
 	};

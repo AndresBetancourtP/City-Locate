@@ -55,6 +55,7 @@ class Publicacion(db.Model): #Query
     date = db.Column(db.DateTime, nullable=False)
 
     author_id = db.Column( db.Integer, db.ForeignKey('user.id'))
+    image = db.Column(db.String(1526), nullable=True)
 
     author = db.relationship("User", backref="anuncios")
 
@@ -62,6 +63,7 @@ class Publicacion(db.Model): #Query
         self.content = content
         self.date = datetime.datetime.today()
         self.author = author
+        self.image = image
 
     def __repr__(self):
         return '<Anuncio => %r>' % self.id
@@ -71,6 +73,7 @@ class Publicacion(db.Model): #Query
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
             "author": self.author.serialize() if self.author != None else 'No author'
+            "image": self.image
         }
 
     def get_content(self):
