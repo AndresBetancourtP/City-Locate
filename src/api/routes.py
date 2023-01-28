@@ -63,7 +63,7 @@ def handle_user():
     def get_anuncio():
         all_anuncio = Anuncio.query.all()
         return jsonify(
-                list.(reversed(([ anuncio.serialize() for anuncio in all_anuncio])))
+                list(reversed(([ anuncio.serialize() for anuncio in all_anuncio])))
             ), 200
 
 

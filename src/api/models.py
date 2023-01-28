@@ -30,8 +30,6 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-            #"id": self.id,
-            #"email": self.email,
             "username": self.username,
             "profile": self.profile_name,
             # do not serialize the password, its a security breach
@@ -72,7 +70,7 @@ class Publicacion(db.Model): #Query
         return {
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
-            "author": self.author.serialize() if self.author != None else 'No author'
+            "author": self.author.serialize() if self.author != None else 'No author',
             "image": self.image
         }
 
