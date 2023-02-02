@@ -44,7 +44,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getFeed: async () => {
         try {
-          const resp = await fetch(process.env.BACKEND_URL + "/api/anuncios");
+          const resp = await fetch(process.env.BACKEND_URL + "/api/anuncio");
           const data = await resp.json();
 
           setStore({ publicacion: data });
@@ -56,7 +56,6 @@ const getState = ({ getStore, getActions, setStore }) => {
       getProfile: async () => {
         console.log("Vamos a repasar todo");
       },
-
       changeColor: (index, color) => {
         //Obtienes desde el Store
         const store = getStore();
@@ -75,7 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       postTexto: async (texto, url) => {
         const store = getStore();
 
-        let response = await fetch(process.env.BACKEND_URL + "/api/anuncios", {
+        let response = await fetch(process.env.BACKEND_URL + "/api/anuncio", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           headers: {
             "Content-Type": "application/json",

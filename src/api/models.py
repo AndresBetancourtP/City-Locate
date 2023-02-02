@@ -37,13 +37,86 @@ class User(db.Model):
 
     def get_profile(self):
         return {
-            #"id": self.id,
-            #"email": self.email,
+            "id": self.id,
+            "email": self.email,
             "username": '@'+self.username,
             "profile": self.profile_name,
             # do not serialize the password, its a security breach
             "anuncios": [ anunciar.get_content() for anunciar in self.anuncios ]
         }
+
+class Anuncio(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    username = db.Column(db.String(15), unique=True, nullable=False)
+    profile_name = db.Column(db.String(50), unique=False, nullable=False)
+
+    def __init__(self, email, password, username, profile_name):
+        self.email = email
+        self.password = password
+        self.username = username
+        self.profile_name = profile_name
+
+        self.is_active = True
+
+
+    def __repr__(self): 
+        return '<User %r>' % self.email
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": self.username,
+            "profile": self.profile_name,
+            # do not serialize the password, its a security breach
+        }
+
+    def get_profile(self):
+        return {
+            "id": self.id,
+            "email": self.email,
+            "username": '@'+self.username,
+            "profile": self.profile_name,
+            # do not serialize the password, its a security breach
+            "anuncios": [ anunciar.get_content() for anunciar in self.anuncios ]
+        }        
+
+
+class Anuncio1(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(120), unique=True, nullable=False)
+    img = db.Column(db.String(80), unique=False, nullable=False)
+    username = db.Column(db.String(15), unique=True, nullable=False)
+    
+    def __init__(self, content, username, image):
+        self.content = content
+        self.username = username
+        self.image = image
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "username": self.username,
+            "image": self.image,
+            # do not serialize the password, its a security breach
+        }    
+
+    def get_anuncio(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "username": '@'+self.username,
+            "image": self.image,
+            
+            # do not serialize the password, its a security breach
+           
+        }
+       
+    
 
 class Publicacion(db.Model): #Query
 
@@ -57,7 +130,7 @@ class Publicacion(db.Model): #Query
 
     author = db.relationship("User", backref="anuncios")
 
-    def __init__(self, content, author):
+    def __init__(self, content, author, image):
         self.content = content
         self.date = datetime.datetime.today()
         self.author = author

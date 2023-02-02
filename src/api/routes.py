@@ -1,9 +1,10 @@
 # This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Publicacion
+from api.models import db, User, Publicacion, Anuncio
 from api.utils import generate_sitemap, APIException
 import hashlib
+import json
 
 #importe decorador jwt_required
 from flask_jwt_extended import jwt_required
@@ -13,14 +14,14 @@ from flask_jwt_extended import get_jwt_identity
 api = Blueprint('api', __name__)
 
 
-@api.route('/user', methods=['GET','POST'])
-def handle_user():
-    if request.method == 'GET':
-        response_body = {
-            "msg": "Hola, este es tu GET /user response"
-        }
-        return jsonify(response_body), 200
-    else:
+@api.route('/user/<string:user_name>', methods=['GET'])
+def get_user(user_name):
+        profile = User.query.filter_by(username=user_name).one_or_none()
+        return jsonify(profile.get_profile()), 200  
+
+@api.route('/user', methods=['POST'])
+def post_user():
+    
         body = request.json
 
         if 'email' not in body:
@@ -49,43 +50,34 @@ def handle_user():
 
         return "Method not implemented yet!",500
 
-    @api.route('/profile/<string:user_name>', methods=['GET'])
-    def get_profile(user_name):
-        profile = User.query.filter_by(username=user_name).one_or_none()
-        if profile == None:
-            return 'Ese usuario no esta registrado', 404
-        else:
-            return jsonify(profile.get_profile()), 200
-
-    
-    @api.route('/anuncio', methods=['GET'])
-    #@jwt_required()
-    def get_anuncio():
+@api.route('/anuncio', methods=['GET'])
+def get_anuncio():
         all_anuncio = Anuncio.query.all()
         return jsonify(
                 list(reversed(([ anuncio.serialize() for anuncio in all_anuncio])))
             ), 200
 
-
-    @api.route('/anuncios', methods=['POST'])
-    @jwt_required()
-    def post_anuncio():
+@api.route('/anuncio', methods=['POST'])
+#@jwt_required()
+def post_anuncio():
         body = request.json
+        
         if "content" not in body:
             return "Ese anuncio no tiene información", 400
         else:
-            author = User.query.filter_by(username=get_jwt_identity()).one_or_none()
+            #author = User.query.filter_by(username=get_jwt_identity()).one_or_none()
+            author = User.query.filter_by(username=body['username']).one_or_none()
             if author == None:
                 return "Ese usuario no existe en City Locate.", 404
             else:
-                new_anuncio = anunciar(body["content"], author)
+                new_anuncio = Publicacion(body["content"], author, body["image"])
                 db.session.add(new_anuncio) 
                 try:
                     db.session.commit() 
-                    return jsonify(new_publicacion.serialize()), 201
+                    return jsonify(new_anuncio.serialize()), 201
                 except Exception as err:
                     return jsonify({ "error": "Ha ocurrido un error de servidor"}), 500
-                    return "Algo ha salido mal, vuelve a intentarlo", 404
+                    return "Algo ha salido mal, vuelve a intentarlo", 404   
 
 @api.route("/login", methods=["POST"])
 def login():
