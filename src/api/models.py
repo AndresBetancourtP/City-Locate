@@ -39,7 +39,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
-            "username": '@'+self.username,
+            "username": self.username,
             "profile": self.profile_name,
             # do not serialize the password, its a security breach
             "anuncios": [ anunciar.get_content() for anunciar in self.anuncios ]

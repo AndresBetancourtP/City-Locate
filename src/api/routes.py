@@ -17,6 +17,8 @@ api = Blueprint('api', __name__)
 @api.route('/user/<string:user_name>', methods=['GET'])
 def get_user(user_name):
         profile = User.query.filter_by(username=user_name).one_or_none()
+        if profile == None:
+            return 'Usuario no existe', 404
         return jsonify(profile.get_profile()), 200  
 
 @api.route('/user', methods=['POST'])
@@ -49,6 +51,8 @@ def post_user():
             return "Ya hay registrado un usuario con ese email!", 400
 
         return "Method not implemented yet!",500
+
+@api.route('/users', methods=['GET'])        
 
 @api.route('/anuncio', methods=['GET'])
 def get_anuncio():
