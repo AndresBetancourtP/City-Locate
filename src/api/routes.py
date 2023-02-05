@@ -13,6 +13,9 @@ from flask_jwt_extended import get_jwt_identity
 
 api = Blueprint('api', __name__)
 
+@api.route('/users', methods=['GET'])        
+def get_users():
+        return jsonify([users.serialize() for users in User.query.all()]),200  
 
 @api.route('/user/<string:user_name>', methods=['GET'])
 def get_user(user_name):
@@ -52,7 +55,6 @@ def post_user():
 
         return "Method not implemented yet!",500
 
-@api.route('/users', methods=['GET'])        
 
 @api.route('/anuncio', methods=['GET'])
 def get_anuncio():
