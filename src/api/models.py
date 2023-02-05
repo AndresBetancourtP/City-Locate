@@ -26,6 +26,12 @@ class User(db.Model):
     def __repr__(self): 
         return '<User %r>' % self.email
 
+    def userlist(self):
+        return {            
+            "email": self.email,
+            "username": self.username,
+        }
+
     def serialize(self):
         return {
             "id": self.id,

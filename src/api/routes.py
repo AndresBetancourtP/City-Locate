@@ -15,7 +15,7 @@ api = Blueprint('api', __name__)
 
 @api.route('/users', methods=['GET'])        
 def get_users():
-        return jsonify([users.serialize() for users in User.query.all()]),200  
+        return jsonify([users.userlist() for users in User.query.all()]),200  
 
 @api.route('/user/<string:user_name>', methods=['GET'])
 def get_user(user_name):
