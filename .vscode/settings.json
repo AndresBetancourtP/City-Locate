@@ -9,5 +9,8 @@
       "name": "DB",
       "connectString": "postgres://gitpod@localhost:5432/example"
     }
-  ]
+  ],
+  "python.testing.pytestArgs": ["src"],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
