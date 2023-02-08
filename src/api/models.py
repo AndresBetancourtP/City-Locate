@@ -35,7 +35,7 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile": self.profile_name,
+            "profile_name": self.profile_name,
             # do not serialize the password, its a security breach
         }
 
@@ -44,7 +44,7 @@ class User(db.Model):
             "id": self.id,
             "email": self.email,
             "username": self.username,
-            "profile": self.profile_name,
+            "profile_name": self.profile_name,
             # do not serialize the password, its a security breach
             "anuncios": [ anunciar.get_content() for anunciar in self.anuncios ]
         }
@@ -55,17 +55,18 @@ class Publicacion(db.Model): #Query
 
     content = db.Column(db.String(280), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
-
-    author_id = db.Column( db.Integer, db.ForeignKey('user.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     image = db.Column(db.String(1526), nullable=True)
+    marca = db.Column(db.String(280), nullable=False)
 
     author = db.relationship("User", backref="anuncios")
 
-    def __init__(self, content, author_id, image):
+    def __init__(self, content, author_id, image, marca):
         self.content = content
         self.date = datetime.datetime.today()
         self.author_id = author_id
         self.image = image
+        self.marca = marca
 
     def __repr__(self):
         return '<Anuncio => %r>' % self.id
@@ -74,13 +75,15 @@ class Publicacion(db.Model): #Query
         return {
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
-            "author": self.author.serialize() if self.author != None else 'No author',
-            "image": self.image
+            "author_id": self.author.serialize() if self.author != None else 'No author',
+            "image": self.image,
+            "marca": self.marca
         }
 
     def get_content(self):
         return {
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
-            "image": self.image
+            "image": self.image,
+            "marca": self.marca
             }

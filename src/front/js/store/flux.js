@@ -71,22 +71,24 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ demo: demo });
       },
 
-      postTexto: async (texto, url) => {
+      postTexto: async (texto, url, marca) => {
         const store = getStore();
 
         let response = await fetch(process.env.BACKEND_URL + "/api/anuncio", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
           headers: {
             "Content-Type": "application/json",
-            Authorization: "Bearer " + store.token,
+            //Authorization: "Bearer " + store.token,
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: JSON.stringify({
             content: texto,
+            author_id: 1, //arreglar
             image: url,
+            marca: marca,
           }), // body data type must match "Content-Type" header
         });
-        let data = await response.json();
+        let data = await response.text();
         if (data) {
           alert("Anuncio publicado satisfactoriamente");
           setStore({ publicacion: [data, ...store.publicacion] });

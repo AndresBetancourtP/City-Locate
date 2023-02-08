@@ -4,24 +4,24 @@ import { Context } from "../store/appContext";
 const Publicar = () => {
   const { store, actions } = useContext(Context);
   const [texto, setTexto] = useState();
-
+  const [marca, setMarca] = useState();
   const [image, setImage] = useState();
   const [file, setFile] = useState();
 
   const postTexto = async () => {
-    actions.postTexto(texto, image);
+    actions.postTexto(texto, image, marca);
     setTexto("");
   };
 
   const uploadImage = async () => {
     const urlCloudinary =
-      "https://api.cloudinary.com/v1_1/dd0wschpy/image/upload";
+      "https://api.cloudinary.com/v1_1/dzmv2j15r/image/upload";
 
     const formData = new FormData();
 
     formData.append("file", file);
 
-    formData.append("upload_preset", "rvpoparu");
+    formData.append("upload_preset", "auivwfcz");
 
     try {
       let resp = await fetch(urlCloudinary, {
@@ -52,6 +52,13 @@ const Publicar = () => {
           id="exampleFormControlTextarea1"
           rows="3"
         ></textarea>
+        <input
+          value={marca}
+          onChange={(event) => setMarca(event.target.value)}
+          className="form-control"
+          id="exampleFormControlInput1"
+          type="text"
+        ></input>
         <div className="d-flex flex-row justify-content-end">
           <input
             onChange={(event) => loadImage(event.target.files)}

@@ -22,7 +22,7 @@ def get_user(user_name):
         profile = User.query.filter_by(username=user_name).one_or_none()
         if profile == None:
             return 'Usuario no existe', 404
-        return jsonify(profile.get_profile()), 200  
+        return jsonify(profile.get_profile()), 200
 
 @api.route('/user', methods=['POST'])
 def post_user():
@@ -147,7 +147,7 @@ def delete_anuncio(id_publicacion):
 
 @api.route('/anuncios', methods=['GET'])        
 def anuncios():
-        return jsonify([anuncios.get_content() for anuncios in Publicacion.query.all()]),200  
+        return jsonify([anuncios.get_content() for anuncios in Publicacion.query.all()]),200
 
 @api.route('/anuncio', methods=['GET'])
 def get_anuncio():
@@ -164,7 +164,7 @@ def post_anuncio():
         if "content" not in body:
             return "Ese anuncio no tiene información", 400
         else:
-            new_anuncio = Publicacion(body["content"], body["author_id"], body["image"])
+            new_anuncio = Publicacion(body["content"], body["author_id"], body["image"], body["marca"])
             db.session.add(new_anuncio) 
             try:
                 db.session.commit() 
