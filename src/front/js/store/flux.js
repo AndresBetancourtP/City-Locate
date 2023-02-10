@@ -89,6 +89,19 @@ const getState = ({ getStore, getActions, setStore }) => {
           }), // body data type must match "Content-Type" header
         });
         let data = await response.text();
+        console.log(data);
+        if (data === "Ese anuncio no tiene información") {
+          alert("Favor agregar un texto");
+          return;
+        }
+        if (data === "Favor agregar una imagen") {
+          alert("Favor seleccionar una imagen");
+          return;
+        }
+        if (data === "Favor agregar la marca del vehiculo") {
+          alert("Favor agregar la marca del vehiculo");
+          return;
+        }
         if (data) {
           alert("Anuncio publicado satisfactoriamente");
           setStore({ publicacion: [data, ...store.publicacion] });

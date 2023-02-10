@@ -133,6 +133,7 @@ def update_anuncio(id_publicacion):
             return jsonify({ "error": "Ha ocurrido un error de servidor"}), 500
 
 @api.route('/anuncio/<int:id_publicacion>', methods=['DELETE'])
+@jwt_required()
 def delete_anuncio(id_publicacion):
     publicacion = Publicacion.query.filter_by(id=id_publicacion).one_or_none()
     if publicacion == None:
@@ -157,14 +158,19 @@ def get_anuncio():
             ), 200
 
 @api.route('/anuncio', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def post_anuncio():
         body = request.json
         
         if "content" not in body:
             return "Ese anuncio no tiene información", 400
+        if "image" not in body:
+            return "Favor agregar una imagen", 400
+        if "marca" not in body:
+            return "Favor agregar la marca del vehiculo", 400
         else:
-            new_anuncio = Publicacion(body["content"], body["author_id"], body["image"], body["marca"])
+            current_userid = get_jwt_identity()
+            new_anuncio = Publicacion(body["content"], current_userid, body["image"], body["marca"])
             db.session.add(new_anuncio) 
             try:
                 db.session.commit() 
@@ -180,14 +186,16 @@ def login():
         return jsonify({"msg": "Bad username or password"}), 401
     else:
         profile = User.query.filter_by(username=username, password=hashlib.md5( password.encode() ).hexdigest()).one_or_none()
+        test = profile.get_profile() 
+        print(test)
         if profile == None:
             return 'Credenciales Incorrectas', 404
         else:
-            access_token = create_access_token(identity=username)
+            access_token = create_access_token(identity=test['id'])
             return jsonify({"token": access_token })
 
-""" @api.route("/protected", methods=["GET"])
+@api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200  """
+    return jsonify(logged_in_as=current_user), 200  
