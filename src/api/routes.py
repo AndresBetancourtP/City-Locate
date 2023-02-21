@@ -148,7 +148,7 @@ def delete_anuncio(id_publicacion):
 
 @api.route('/anuncios', methods=['GET'])        
 def anuncios():
-        return jsonify([anuncios.get_content() for anuncios in Publicacion.query.all()]),200
+            return jsonify([anuncios.get_content() for anuncios in Publicacion.query.all()]),200
 
 @api.route('/anuncio', methods=['GET'])
 def get_anuncio():
@@ -158,7 +158,7 @@ def get_anuncio():
             ), 200
 
 @api.route('/anuncio', methods=['POST'])
-@jwt_required()
+#@jwt_required()
 def post_anuncio():
         body = request.json
         
@@ -169,8 +169,8 @@ def post_anuncio():
         if "marca" not in body:
             return "Favor agregar la marca del vehiculo", 400
         else:
-            current_userid = get_jwt_identity()
-            new_anuncio = Publicacion(body["content"], current_userid, body["image"], body["marca"])
+            #current_userid = get_jwt_identity()
+            new_anuncio = Publicacion(body["content"], 1, body["image"], body["marca"])
             db.session.add(new_anuncio) 
             try:
                 db.session.commit() 

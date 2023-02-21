@@ -76,8 +76,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         let response = await fetch(process.env.BACKEND_URL + "/api/anuncio", {
           method: "POST", // *GET, POST, PUT, DELETE, etc.
+          mode: "cors",
           headers: {
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
             //Authorization: "Bearer " + store.token,
             // 'Content-Type': 'application/x-www-form-urlencoded',
           },

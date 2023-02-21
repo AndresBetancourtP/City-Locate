@@ -82,6 +82,7 @@ class Publicacion(db.Model): #Query
 
     def get_content(self):
         return {
+            "id": self.id,
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
             "image": self.image,

@@ -53,7 +53,7 @@ const Publicar = () => {
           rows="3"
         ></textarea>
         <input
-          value={marca}
+          value={marca || ""}
           onChange={(event) => setMarca(event.target.value)}
           className="form-control"
           id="exampleFormControlInput1"
