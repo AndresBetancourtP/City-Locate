@@ -6,10 +6,10 @@ export const Navbar = () => {
     <nav className="navbar navbar-dark bg-dark">
       <div className="container">
         <Link to="/">
-          <span className="navbar-brand mb-0 h1">City Locate 🚗</span>
+          <span className="navbar-brand mb-0 h1">AUTO4U</span>
         </Link>
         <div className="ml-auto">
-          <Link to="/login">
+          <Link to="/log">
             <button className="btn btn-light ">Login</button>
           </Link>
         </div>
