@@ -16,7 +16,7 @@ const Search = () => {
             aria-describedby="basic-addon1"
           />
         </div>
-        {/* Modelos de carro la cual se le agregara un link a cada uno */}
+        {/* Modelos de carro la cual se le agregara un link a cada uno 
         <div className="">
           <h4>Modelo de carro 🚗✨</h4>
 
@@ -45,7 +45,7 @@ const Search = () => {
               </li>
             </ul>
           </div>
-        </div>
+        </div>*/}
       </div>
     </>
   );

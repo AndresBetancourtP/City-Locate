@@ -25,7 +25,7 @@ export const Home = () => {
           <Feed />
         </div>
         <div className="col-4">
-          <Search />
+          <h3>PUBLICIDAD</h3>
         </div>
       </div>
     </div>

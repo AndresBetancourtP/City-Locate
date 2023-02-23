@@ -87,6 +87,7 @@ export const Log = () => {
         <div className="col-md-4">
           <form id="loginform" onSubmit={loginSubmit}>
             <div className="form-group">
+              <ul></ul>
               <label>Email address</label>
               <input
                 type="email"

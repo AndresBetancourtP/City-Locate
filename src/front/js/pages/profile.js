@@ -37,9 +37,15 @@ const Profile = () => {
           <h3>Perfil de Usuario</h3>
 
           <h1>{"@" + user.username}</h1>
-          <p>Nombre de Usuario: {user.username}</p>
-          <p>Email de Usuario: {user.email}</p>
-          <p>Perfil de Usuario: {user.profile_name}</p>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item">
+              Nombre de Usuario: {user.username}
+            </li>
+            <li className="list-group-item">Email de Usuario: {user.email}</li>
+            <li className="list-group-item">
+              Perfil de Usuario: {user.profile_name}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
