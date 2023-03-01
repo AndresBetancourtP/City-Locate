@@ -28,6 +28,7 @@ class User(db.Model):
         return {            
             "email": self.email,
             "username": self.username,
+            "id": self.id
         }
 
     def serialize(self):
@@ -86,5 +87,6 @@ class Publicacion(db.Model): #Query
             "content": self.content,
             "date": arrow.get(self.date).humanize(),
             "image": self.image,
-            "marca": self.marca
+            "marca": self.marca,
+            "author_id": self.author.serialize() if self.author != None else 'No author'
             }

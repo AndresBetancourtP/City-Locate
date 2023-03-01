@@ -35,6 +35,11 @@ export default function Publications() {
     fetchUsers();
   }, []);
 
+  const findUser = (itemId) => {
+    const result = users.find((item) => item.id === itemId);
+    return result?.username;
+  };
+
   return (
     <div>
       {anuncios.length > 0 && (
@@ -43,11 +48,12 @@ export default function Publications() {
             <div className="col-12 col-sm-12 col-lg-12">
               <ul className="list-group">
                 {anuncios.map((anuncio) => (
-                  <ul key={anuncio.id} className="list-group-item">
+                  <li key={anuncio.id} className="list-group-item">
                     <span className="list-group-item d-flex justify-content-between align-items-center">
                       <div className="ml-2">
-                        <div className="h5 m-0">{anuncio.id}</div>
-                        <div className="h7 text-muted">Miracles Lee Cross</div>
+                        <div className="h7 text-muted">
+                          {findUser(anuncio.author_id.id)}
+                        </div>
                       </div>
                       <img
                         src={anuncio.image}
@@ -56,12 +62,12 @@ export default function Publications() {
                         className="img-reponsive img-rounded"
                         onError={(e) => (e.target.src = car1)}
                       />
-                      <ul>{anuncio.content}</ul>
-                      <ul>{anuncio.marca}</ul>
-                      <ul>
+                      <p>{anuncio.content}</p>
+                      <p>{anuncio.marca}</p>
+                      <p>
                         <i className="fa fa-clock-o"></i>
                         {` ${anuncio.date}`}
-                      </ul>
+                      </p>
                     </span>
                     <div className="card-footer">
                       <a href="#" className="card-link">
@@ -74,7 +80,7 @@ export default function Publications() {
                         <i className="fa fa-mail-forward"></i> Share
                       </a>
                     </div>
-                  </ul>
+                  </li>
                 ))}
               </ul>
             </div>
