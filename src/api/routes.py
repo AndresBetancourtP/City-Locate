@@ -18,6 +18,7 @@ def get_users():
         return jsonify([users.userlist() for users in User.query.all()]),200  
 
 @api.route('/user/<string:user_name>', methods=['GET'])
+@jwt_required()
 def get_user(user_name):
         profile = User.query.filter_by(username=user_name).one_or_none()
         if profile == None:
@@ -147,6 +148,7 @@ def delete_anuncio(id_publicacion):
             return 'Ha ocurrido un error', 500
 
 @api.route('/anuncios', methods=['GET'])        
+#@jwt_required()
 def anuncios():
             return jsonify([anuncios.get_content() for anuncios in Publicacion.query.all()]),200
 
@@ -180,19 +182,17 @@ def post_anuncio():
                 
 @api.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
+    email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if username == None or password == None:
-        return jsonify({"msg": "Bad username or password"}), 401
+    if email == None or password == None:
+        return jsonify({"msg": "Bad email or password"}), 401
     else:
-        profile = User.query.filter_by(username=username, password=hashlib.md5( password.encode() ).hexdigest()).one_or_none()
-        test = profile.get_profile() 
-        print(test)
+        profile = User.query.filter_by(email=email, password=hashlib.md5( password.encode() ).hexdigest()).one_or_none()
         if profile == None:
             return 'Credenciales Incorrectas', 404
         else:
-            access_token = create_access_token(identity=test['id'])
-            return jsonify({"token": access_token })
+            access_token = create_access_token(identity=email)
+            return jsonify({"token": access_token, "user":profile.username })
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()

@@ -2,6 +2,8 @@ import React, { Component, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 
+import AuthService from "../service/auth.service";
+
 export const Login = () => {
   const navigate = useNavigate();
 
@@ -15,8 +17,8 @@ export const Login = () => {
   // User Login info
   const database = [
     {
-      email: "test1@test.com",
-      password: "test1234",
+      email: "test1@gmail.com",
+      password: "test1",
     },
     {
       username: "test2@test.com",
@@ -60,11 +62,29 @@ export const Login = () => {
     e.preventDefault();
     let formResult = handleValidation();
     console.log(formResult);
-    const userData = database.find((user) => user.email === email);
+    let userData;
+    //const userData = database.find((user) => user.email === email);
     // Compare user info
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    };
+    AuthService.login(email, password)
+      .then(() => {
+        navigate("/");
+        window.location.reload();
+      })
+      .catch((e) => {
+        settostadaError("Credenciales Incorrectas");
+        console.log(e);
+      }); // ReferenceError: blabla is not define;
 
     if (!userData) {
-      settostadaError("Correo invalido");
+      settostadaError("Credenciales Incorrectas");
       return;
     } else {
       settostadaError("");
@@ -72,7 +92,7 @@ export const Login = () => {
 
     if (userData.password !== password) {
       // Invalid password
-      settostadaError("Credenciales Incorrectas");
+      settostadaError("Password Incorrecto");
       return;
     } else {
       settostadaError("");
@@ -87,7 +107,6 @@ export const Login = () => {
         <div className="col-md-4">
           <form id="loginform" onSubmit={loginSubmit}>
             <div className="form-group">
-              <ul></ul>
               <label>Email address</label>
               <input
                 type="email"

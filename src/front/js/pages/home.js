@@ -21,7 +21,6 @@ export const Home = () => {
         {/* Feed */}
         <div className="col-6 py-3">
           <h3>Los mejores precios del mercado en vehiculos</h3>
-          <Publicar />
           <Feed />
         </div>
         <div className="col-4">

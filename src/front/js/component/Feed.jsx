@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
+import AuthService from "../service/auth.service";
 import { Context } from "../store/appContext";
 import "../../styles/publications.css";
 import car1 from "../../img/rigo-baby.jpg";
@@ -7,6 +8,12 @@ import car1 from "../../img/rigo-baby.jpg";
 export default function Publications() {
   const [anuncios, setAnuncios] = useState([]);
   const [users, setUsers] = useState([]);
+
+  /*const test = AuthService.getCurrentUser(test);
+  console.log(test);
+  const headers = {
+    Authorization: `Bearer ${test.token}`, 
+  }; */
 
   const fetchAnuncios = () => {
     fetch(process.env.BACKEND_URL + "/api/anuncios")
