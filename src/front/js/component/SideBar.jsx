@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import AuthService from "../service/auth.service";
 
 const SideBar = () => {
+  const [currentUser, setCurrentUser] = useState(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+    }
+  }, []);
   return (
     <>
       {/* boton del home */}
@@ -16,16 +26,18 @@ const SideBar = () => {
         </Link>
       </div>
       {/* boton del perfil */}
-      <div className="text-center">
-        <Link to="/profile">
-          <button className="btn btn-dark btn-sm mt-2" role="button">
-            <span className="text-white d-flex flex-row">
-              Profile
-              <i className="fa-solid fa-user my-auto mx-4"></i>
-            </span>
-          </button>
-        </Link>
-      </div>
+      {currentUser && (
+        <div className="text-center">
+          <Link to="/profile">
+            <button className="btn btn-dark btn-sm mt-2" role="button">
+              <span className="text-white d-flex flex-row">
+                Profile
+                <i className="fa-solid fa-user my-auto mx-4"></i>
+              </span>
+            </button>
+          </Link>
+        </div>
+      )}
     </>
   );
 };
